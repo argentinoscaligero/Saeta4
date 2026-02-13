@@ -1,0 +1,40 @@
+# compiled output
+/dist
+
+# dependencies
+/node_modules
+
+# IDE
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+npm-debug.log
+yarn-error.log
+/.nyc_output
+/coverage
+
+# OS
+.DS_Store
+Thumbs.db
+
+# env
+.env
+.env.*
+!.env.example
+
+# tests
+/coverage
+/.nyc_output
