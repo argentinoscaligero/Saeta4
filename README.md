@@ -91,6 +91,83 @@ src/
 └── main.ts              # Entry point + Swagger setup
 ```
 
+## 🚀 Production Deployment
+
+### Server Info
+- **URL**: https://saeta.penaltycorner.com.ar
+- **OS**: Oracle Linux ARM64
+- **Resources**: 4 CPUs, 12GB RAM
+- **Web Server**: Nginx + SSL (Let's Encrypt)
+- **Process Manager**: PM2
+- **Repository**: https://github.com/argentinoscaligero/Saeta4
+
+### Deployment Steps
+
+```bash
+# 1. Clone repository (already done)
+cd /opt/saeta4
+
+# 2. Install dependencies
+npm install
+
+# 3. Configure environment
+cp .env.example .env
+nano .env
+
+# Generate JWT_SECRET with:
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+# Required .env variables:
+# DB_HOST=localhost
+# DB_PORT=5432
+# DB_USERNAME=saeta
+# DB_PASSWORD=<your_postgres_password>
+# DB_NAME=saeta4
+# JWT_SECRET=<generated_secret>
+# PORT=3000
+# NODE_ENV=production
+
+# 4. Build application
+npm run build
+
+# 5. Start with PM2
+pm2 start dist/main.js --name saeta4
+pm2 save
+pm2 startup  # Follow instructions
+
+# 6. Monitor
+pm2 logs saeta4
+pm2 monit
+```
+
+### Nginx Configuration
+
+Already configured at `/etc/nginx/conf.d/saeta.conf`:
+- HTTPS on port 443 with valid SSL certificate
+- HTTP redirect to HTTPS
+- Reverse proxy to Node.js on port 3000
+
+### SSL Certificate
+
+- Let's Encrypt certificates via Podman + Certbot
+- Located at: `/etc/nginx/ssl/`
+- Auto-renewal configured
+
+### Current Status
+
+✅ Repository created and code pushed  
+✅ Server infrastructure ready (Nginx, PostgreSQL, PM2)  
+✅ Database created (saeta4)  
+✅ SSL certificate configured  
+⏳ Pending: npm install + build + pm2 start  
+
+### Next Steps
+
+1. SSH to server and complete deployment steps above
+2. Test API: https://saeta.penaltycorner.com.ar/api/docs
+3. Create admin user via API
+4. Set repository to private
+
 ## License
 
-Private
+Private - Penalty Corner © 2026
